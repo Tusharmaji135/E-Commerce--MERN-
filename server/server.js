@@ -1,3 +1,4 @@
+require('@dotenvx/dotenvx').config()
 const cookieParser = require("cookie-parser");
 const express = require("express");
 const mongoose = require("mongoose");
@@ -6,7 +7,7 @@ const cors = require("cors");
 //db connection
 mongoose
   .connect(
-    "mongodb+srv://135tusharmaji:135tusharmaji@cluster0.syhchtl.mongodb.net/"
+    process.env.MONGODB_URI || "mongodb://localhost:27017/mydatabase",
   )
   .then(() => console.log("Succesfully connected with Database"))
   .catch((err) => console.log(err));
