@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 
 // Auth components
@@ -24,17 +24,28 @@ import ShoppingAccount from "./pages/shopping-view/account";
 import NotFound from "./pages/not-found";
 import UnauthPage from "./pages/unauth-page";
 import CheckAuth from "./components/common/check-auth";
+import { useDispatch, useSelector } from "react-redux";
+import { checkAuth } from "./store/auth-slice";
+import { Skeleton } from "./components/ui/skeleton";
 
 const App = () => {
-  // These should ideally come from a global state like Redux or Context
-  const isAuthenticated = false;
-  const user = null;
+  const { isAuthenticated, isLoading, user } = useSelector(
+    (state) => state.auth
+  );
+  const dispatch = useDispatch()
+
+  useEffect(()=>{
+   dispatch(checkAuth())
+  },[dispatch])
+
+  if(isLoading){
+    return <Skeleton className="h-[600px] w-[800px]  bg-black" />
+  }
 
   return (
     <div className="flex flex-col overflow-hidden bg-white">
       {/* Define all application routes */}
       <Routes>
-
         {/* Auth routes: login and register */}
         <Route
           path="/auth"

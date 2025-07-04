@@ -9,26 +9,16 @@ const CheckAuth = ({ isAuthenticated, user, children }) => {
   const location = useLocation();
 
   // Case 1: If not authenticated and trying to access a page that is not login or register, redirect to login
-  if (
-    !isAuthenticated &&
-    !(
-      location.pathname.includes("/login") ||
-      location.pathname.includes("/register")
-    )
-  ) {
+  if (!isAuthenticated && !location.pathname.includes("/auth")) {
     return <Navigate to={"/auth/login"} />;
   }
 
   // Case 2: If already authenticated and trying to access login or register pages
-  if (
-    isAuthenticated &&
-    (location.pathname.includes("/login") ||
-      location.pathname.includes("/register"))
-  ) {
+  if (isAuthenticated && location.pathname.includes("/auth")) {
     // If user is admin, redirect to admin dashboard
     if (user?.role === "admin") {
       return <Navigate to={"/admin/dashboard"} />;
-    } 
+    }
     // If user is not admin, redirect to shop home
     else {
       return <Navigate to={"/shop/home"} />;
